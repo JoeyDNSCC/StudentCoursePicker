@@ -1,11 +1,6 @@
-//
-// Created by wolph on 10/22/2026.
-//
-
 #ifndef COURSES_STUDENT_H
 #define COURSES_STUDENT_H
 #include <string>
-
 
 class Student {
     std::string name;
@@ -25,14 +20,11 @@ class Student {
     [[nodiscard]] std::string toString() const;
     friend std::ostream &operator<<(std::ostream &output, Student &student);
 
-    // getters & setters
-    std::string getName();
-    int getNumCourses();
-    std::string getCourseList();
-    void setName(std::string name);
-    void setNumCourses(int numCourses);
-    void setCourseList(std::string* courseList);
-
+    // getters
+    [[nodiscard]] std::string getName() const;
+    [[nodiscard]] int getNumCourses() const;
+    [[nodiscard]] std::string getCourse(int index) const;
+    // no setters bcuz .add() exists
 };
 
 

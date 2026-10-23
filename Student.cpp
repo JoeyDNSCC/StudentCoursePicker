@@ -13,7 +13,7 @@ Student::Student()
     }
 
 // string constructor
-Student::Student(std::string  name)
+Student::Student(std::string name)
         :name(std::move(name)), numCourses(0), courseList(nullptr) {
         std::cout << "created student with name" << std::endl;
     }
@@ -101,4 +101,21 @@ std::ostream& operator<<(std::ostream &output, const Student &student) {
     return output; //ostream object
 
 }
+
+// ==============================
+// getters & setters
+
+std::string Student::getName() const {
+    return name;
+}
+int Student::getNumCourses() const {
+    return numCourses;
+}
+std::string Student::getCourse(int index) const {
+    if (index < 0 || index >= numCourses) {
+        throw std::out_of_range("Invalid course index");
+    }
+    return courseList[index];
+}
+
 
