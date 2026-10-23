@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include <strstream>
+#include <utility>
 
 
 // default constructor
@@ -12,35 +13,34 @@ Student::Student()
     }
 
 // string constructor
-Student::Student(const std::string name)
-        :name(name), numCourses(0), courseList(nullptr) {
+Student::Student(std::string  name)
+        :name(std::move(name)), numCourses(0), courseList(nullptr) {
         std::cout << "created student with name" << std::endl;
     }
 
 // copy constructor
-Student::Student(Student& student) // broken?
+Student::Student(const Student& student)
+    // copy name and numCourses
     :name(student.name), numCourses(student.numCourses) {
 
-    // "new" puts on heap
-    std::string* temp = new std::string[numCourses];// instance arr
+    // instance array to hold courses
+    this->courseList = new std::string[numCourses];
 
-    // TEST deep/shallow copy?
+    // copy courses from passed student to created student
     for (int i = 0; i < student.numCourses; i++) {
-        temp[i] = (student.courseList[i]);
+        this->courseList[i] = (student.courseList[i]);
     }
 
-    //
-    courseList = temp;
-    std::cout << "copied student " << student.name << std::endl;
+    std::cout << "copied student: " << student.name << std::endl;
 }
 
 // assignment operator
-Student &Student::operator=(const Student &rightObj) {
+Student& Student::operator=(const Student &rightObj) {
     // in case assigned to itself
     if (this == &rightObj) return *this;
 
     // allocate memory for new array
-    std::string* temp = new std::string[numCourses];
+    auto* temp = new std::string[numCourses];
 
     // copy courses
     for (int i = 0; i < numCourses; i++) {
@@ -67,7 +67,7 @@ void Student::add(const std::string& course) {
     // increment array length
     this->numCourses++;
     // create temp array with new length
-    std::string* newCourses = new std::string[numCourses];
+    auto* newCourses = new std::string[numCourses];
 
     //fill new array with old values
     for (int i = 0; i < numCourses - 1; i++) {
@@ -81,14 +81,14 @@ void Student::add(const std::string& course) {
     courseList = newCourses;
 }
 
-// output name and all courses
-std::string Student::toString() {
-    std::strstream strStream;
-    strStream << this->name << std::endl;
+// output name and all courses (broken?)
+std::string Student::toString() const {
+    std::string output;
+    output.append(this->name);
     for (int i = 0; i < this->numCourses; i++) {
-        strStream << this->courseList[i] << std::endl;
+        output.append(this->courseList[i]);
     }
-    return strStream.str(); // THIS FUNCTION IS WRONG
+    return output;
 }
 
 // overloaded << operator

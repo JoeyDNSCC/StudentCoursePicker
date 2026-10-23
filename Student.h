@@ -15,12 +15,14 @@ class Student {
     public:
     // requested in assignment doc
     Student();
-    Student(std::string name);
-    Student(Student& student);
-    Student &operator=(const Student &rightObj);
+    // IDE recommended "explicit"
+    explicit Student(std::string name);
+    Student(const Student& student);
+    Student& operator=(const Student &rightObj);
     ~Student();
     void add(const std::string& course);
-    std::string toString();
+    //IDE recommended [[nodiscard]] and const
+    [[nodiscard]] std::string toString() const;
     friend std::ostream &operator<<(std::ostream &output, Student &student);
 
     // getters & setters
