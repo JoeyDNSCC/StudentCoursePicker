@@ -16,7 +16,6 @@ class Student {
     Student& operator=(const Student &rightObj);
     ~Student();
     void add(const std::string& course);
-    //IDE recommended [[nodiscard]] and const
     [[nodiscard]] std::string toString() const;
     friend std::ostream &operator<<(std::ostream &output, Student &student);
 
@@ -24,7 +23,7 @@ class Student {
     [[nodiscard]] std::string getName() const;
     [[nodiscard]] int getNumCourses() const;
     [[nodiscard]] std::string getCourse(int index) const;
-    // no setters bcuz .add() exists
+    void setName(const std::string& newName);
 };
 
 
