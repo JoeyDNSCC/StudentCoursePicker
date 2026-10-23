@@ -9,14 +9,18 @@
 // default constructor
 Student::Student()
     :numCourses(0), courseList(nullptr) {
+
     std::cout << "defaultConstructor" << std::endl;
 }
+
 
 // string constructor
 Student::Student(std::string name)
     :name(std::move(name)), numCourses(0), courseList(nullptr) {
+
     std::cout << "string_constructor" << std::endl;
 }
+
 
 // copy constructor
 Student::Student(const Student& student)
@@ -35,6 +39,7 @@ Student::Student(const Student& student)
 
     std::cout << "COMPLETE copy_constructor " << student.name << std::endl;
 }
+
 
 // assignment operator
 Student& Student::operator=(const Student &rightObj) {
@@ -62,17 +67,22 @@ Student& Student::operator=(const Student &rightObj) {
     return *this;
 }
 
+
 // destructor
 Student::~Student() {
     std::cout << "BEGAN destructor" << std::endl;
+
     // if (courseList != nullptr) // ask abt redundant null check
     delete[] courseList;
+
     std::cout << "COMPLETE destructor" << std::endl;
 }
+
 
 // add course to student
 void Student::add(const std::string& course) {
     std::cout << "BEGAN add_course" << std::endl;
+
     // increment array length
     this->numCourses++;
     // create temp array with new length
@@ -88,8 +98,10 @@ void Student::add(const std::string& course) {
     // replace old array with new array
     delete[] courseList;
     courseList = newCourses;
+
     std::cout << "COMPLETE add_course" << std::endl;
 }
+
 
 // output name and all courses (broken?)
 std::string Student::toString() const {
@@ -112,39 +124,54 @@ std::string Student::toString() const {
         output.append("and " + courseList[numCourses - 1]);
     }
 
+    output.append("\n");
     return output;
 }
+
 
 // overloaded << operator
 std::ostream& operator<<(std::ostream &output, Student &student) {
     std::cout << "BEGAN ostream_operator_overload" << std::endl;
+
     output << student.toString();
-    std::cout << "<<COMPLETE ostream_operator_overload" << std::endl;
+
+    std::cout << "COMPLETE ostream_operator_overload" << std::endl;
     return output; //ostream object
 }
+
+
+// drop all courses from student
+void Student::flunkOut() {
+    this->numCourses = 0;
+    delete[] this->courseList;
+    // empty list instead of null
+    courseList = new std::string[numCourses];
+}
+
 
 // ==============================
 // getters & setters
 
+
 std::string Student::getName() const {
-    std::cout << "get_name" << std::endl;
+    //std::cout << "get_name" << std::endl;
     return name;
 }
 int Student::getNumCourses() const {
-    std::cout << "get_num_courses" << std::endl;
+    //std::cout << "get_num_courses" << std::endl;
     return numCourses;
 }
 std::string Student::getCourse(const int index) const {
-    std::cout << "BEGAN get_course["<< std::to_string(index) << "]" << std::endl;
+    //std::cout << "BEGAN get_course["<< std::to_string(index) << "]" << std::endl;
     if (index < 0 || index >= numCourses) {
         throw std::out_of_range("Invalid course index");
     }
-    std::cout << "COMPLETE get_course["<< std::to_string(index) << "]" << std::endl;
+    //std::cout << "COMPLETE get_course["<< std::to_string(index) << "]" << std::endl;
     return courseList[index];
 }
 
 void Student::setName(const std::string& newName) {
-    std::cout << "set_name" << std::endl;
+    std::cout << "set_name: " << this->name << " to " << newName << std::endl;
     this->name = newName;
 }
 

@@ -17,6 +17,7 @@ class Student {
     ~Student();
     void add(const std::string& course);
     [[nodiscard]] std::string toString() const;
+    void flunkOut();
     friend std::ostream &operator<<(std::ostream &output, Student &student);
 
     // getters

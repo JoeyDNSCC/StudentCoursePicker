@@ -49,5 +49,15 @@ int main() {
     getline(cin, name);
     stu2.setName(name);
 
+    // display student 2
+    cout << stu2 << endl;
+
+
+    stu1.flunkOut();
+    cout << stu1 << endl;
+    cout << stu2 << endl;
+    Student stu3 = stu2;
+    cout << stu3 << endl;
+
     return 0;
 }
