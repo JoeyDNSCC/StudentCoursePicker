@@ -12,22 +12,24 @@ Student::Student()
     }
 
 // string constructor
-Student::Student(std::string name)
+Student::Student(const std::string name)
         :name(name), numCourses(0), courseList(nullptr) {
         std::cout << "created student with name" << std::endl;
     }
 
 // copy constructor
-Student::Student(Student& student)
+Student::Student(Student& student) // broken?
     :name(student.name), numCourses(student.numCourses) {
 
+    // "new" puts on heap
     std::string* temp = new std::string[numCourses];// instance arr
 
     // TEST deep/shallow copy?
     for (int i = 0; i < student.numCourses; i++) {
         temp[i] = (student.courseList[i]);
     }
-    delete[] courseList;
+
+    //
     courseList = temp;
     std::cout << "copied student " << student.name << std::endl;
 }
@@ -60,15 +62,23 @@ Student::~Student() {
     }
 
 // add course to student
-void Student::add(std::string course) {
-    // increment
+void Student::add(const std::string& course) {
+
+    // increment array length
     this->numCourses++;
+    // create temp array with new length
     std::string* newCourses = new std::string[numCourses];
+
+    //fill new array with old values
     for (int i = 0; i < numCourses - 1; i++) {
         newCourses[i] = courseList[i];
     }
+    // insert new value at end
+    newCourses[numCourses - 1] = course;
 
-
+    // replace old array with new array
+    delete[] courseList;
+    courseList = newCourses;
 }
 
 // output name and all courses
@@ -84,5 +94,7 @@ std::string Student::toString() {
 // overloaded << operator
 std::ostream &operator<<(std::ostream &output, Student &student) {
     output << student.toString();
+
+
 }
 

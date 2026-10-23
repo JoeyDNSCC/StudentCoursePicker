@@ -19,7 +19,7 @@ class Student {
     Student(Student& student);
     Student &operator=(const Student &rightObj);
     ~Student();
-    void add(std::string course);
+    void add(const std::string& course);
     std::string toString();
     friend std::ostream &operator<<(std::ostream &output, Student &student);
 
