@@ -23,6 +23,8 @@ Student::Student(const Student& student)
     // copy name and numCourses
     :name(student.name), numCourses(student.numCourses) {
 
+    std::cout << "BEGAN copy_constructor " << student.name << std::endl;
+
     // instance array to hold courses
     this->courseList = new std::string[numCourses];
 
@@ -31,7 +33,7 @@ Student::Student(const Student& student)
         this->courseList[i] = (student.courseList[i]);
     }
 
-    std::cout << "copied student: " << student.name << std::endl;
+    std::cout << "COMPLETE copy_constructor " << student.name << std::endl;
 }
 
 // assignment operator
@@ -83,18 +85,20 @@ void Student::add(const std::string& course) {
 
 // output name and all courses (broken?)
 std::string Student::toString() const {
+    // feels like cheating bcuz strings change size dynamically
     std::string output;
-    output.append(this->name);
+    // basic output string building
+    output.append(this->name + " is in:\n");
     for (int i = 0; i < this->numCourses; i++) {
-        output.append(this->courseList[i]);
+        output.append(this->courseList[i] + ", "); // TO-DO: fix trailing comma
     }
     return output;
 }
 
 // overloaded << operator
-std::ostream &operator<<(std::ostream &output, Student &student) {
+std::ostream& operator<<(std::ostream &output, const Student &student) {
     output << student.toString();
-
+    return output; //ostream object
 
 }
 
