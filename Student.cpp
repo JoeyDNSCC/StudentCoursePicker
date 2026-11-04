@@ -8,15 +8,14 @@
 
 // default constructor
 Student::Student()
-    :numCourses(0), courseList(nullptr) {
+    :numCourses(0), courseList(new std::string[numCourses]) {
 
     std::cout << "defaultConstructor" << std::endl;
 }
 
-
 // string constructor
 Student::Student(std::string name)
-    :name(std::move(name)), numCourses(0), courseList(nullptr) {
+    :name(std::move(name)), numCourses(0), courseList(new std::string[numCourses]) {
 
     std::cout << "string_constructor" << std::endl;
 }
@@ -27,7 +26,7 @@ Student::Student(const Student& student)
     // copy name and numCourses
     :name(student.name), numCourses(student.numCourses) {
 
-    std::cout << "copy_constructor " << student.name << std::endl;
+    std::cout << "BEGAN copy_constructor " << student.name << std::endl;
 
     // instance array to hold courses
     this->courseList = new std::string[numCourses];
@@ -48,11 +47,13 @@ Student& Student::operator=(const Student &rightObj) {
     // in case assigned to itself
     if (this == &rightObj) return *this;
 
+    this->name = rightObj.name;
+
     // allocate memory for new array
-    auto* temp = new std::string[numCourses];
+    auto* temp = new std::string[rightObj.numCourses];
 
     // copy courses
-    for (int i = 0; i < numCourses; i++) {
+    for (int i = 0; i < rightObj.numCourses; i++) {
         temp[i] = rightObj.courseList[i];
     }
 
@@ -64,18 +65,24 @@ Student& Student::operator=(const Student &rightObj) {
 
     std::cout << "COMPLETE assignment_operator_overload" << std::endl;
 
-    return *this;
+    return *this; // stu1 = stu2 = stu3 = ...
 }
 
 
 // destructor
 Student::~Student() {
-    std::cout << "BEGAN destructor" << std::endl;
+    std::cout << "BEGAN destructor " << this->name << std::endl;
+
+    // not sure if erase() is necessary
+    // this->name.erase();
+    // for (int i = numCourses - 1; i >= 0; i--) {
+    //     this->courseList[i].erase();
+    // }
 
     // if (courseList != nullptr) // ask abt redundant null check
-    delete[] courseList;
+    delete[] this->courseList;
 
-    std::cout << "COMPLETE destructor" << std::endl;
+    std::cout << "COMPLETE destructor _" << std::endl;
 }
 
 
@@ -105,27 +112,39 @@ void Student::add(const std::string& course) {
 
 // output name and all courses (broken?)
 std::string Student::toString() const {
+    std::cout << "BEGAN toString " << this->name << std::endl;
+    try {
 
-    // feels like cheating bcuz strings change size dynamically
-    std::string output;
+        // instance str
+        std::string output;
 
-    // basic output string building
-    output.append(this->name + " is in " + std::to_string(this->numCourses) +" course(s):\n");
+        // wasting time on pretty output
+        if (this->numCourses == 0) {
+            output = "\n" + this->name + " is not enrolled in any courses";
+        } else {
+            output.append("\n" + this->name + " is in " + std::to_string(this->numCourses) +" course(s):\n");
 
-    // wasting time coding oxford comma condition
-    if (numCourses == 1) {
-        output.append(courseList[0]);
-    } else if (numCourses == 2) {
-        output.append(courseList[0] + " and " + courseList[1]);
-    } else {
-        for (int i = 0; i < numCourses - 1; i++) {
-            output.append(courseList[i] + ", ");
+            if (this->numCourses == 1) {
+                output.append(this->courseList[0]);
+            } else if (this->numCourses == 2) {
+                output.append(this->courseList[0] + " and " + this->courseList[1]);
+            } else {
+                for (int i = 0; i < this->numCourses - 1; i++) {
+                    output.append(this->courseList[i] + ", ");
+                }
+                output.append("and " + this->courseList[this->numCourses - 1]);
+            }
         }
-        output.append("and " + courseList[numCourses - 1]);
-    }
+        output.append("\n");
+        std::cout << "COMPLETE toString" << this->name << std::endl;
+        return output;
 
-    output.append("\n");
-    return output;
+    // DOESNT catch out of range error :(
+    } catch (std::exception& e) {
+        std::cout << "ERROR toString " << std::endl;
+        return e.what();
+    }
+    return "dude what happened";
 }
 
 
@@ -133,19 +152,23 @@ std::string Student::toString() const {
 std::ostream& operator<<(std::ostream &output, Student &student) {
     std::cout << "BEGAN ostream_operator_overload" << std::endl;
 
-    output << student.toString();
+    output << student.toString() << std::endl;
 
-    std::cout << "COMPLETE ostream_operator_overload" << std::endl;
+    std::cout << "COMPLETE ostream_operator_overload";
     return output; //ostream object
 }
 
 
 // drop all courses from student
 void Student::flunkOut() {
+    std::cout << "BEGAN flunk_out" << std::endl;
+
     this->numCourses = 0;
     delete[] this->courseList;
     // empty list instead of null
     courseList = new std::string[numCourses];
+
+    std::cout << "COMPLETE flunk_out" << std::endl;
 }
 
 

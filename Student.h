@@ -20,7 +20,7 @@ class Student {
     void flunkOut();
     friend std::ostream &operator<<(std::ostream &output, Student &student);
 
-    // getters
+    // getters & setters
     [[nodiscard]] std::string getName() const;
     [[nodiscard]] int getNumCourses() const;
     [[nodiscard]] std::string getCourse(int index) const;
