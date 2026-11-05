@@ -177,19 +177,19 @@ void Student::flunkOut() {
 
 
 std::string Student::getName() const {
-    //std::cout << "get_name" << std::endl;
+    std::cout << "get_name" << std::endl;
     return name;
 }
 int Student::getNumCourses() const {
-    //std::cout << "get_num_courses" << std::endl;
+    std::cout << "get_num_courses" << std::endl;
     return numCourses;
 }
 std::string Student::getCourse(const int index) const {
-    //std::cout << "BEGAN get_course["<< std::to_string(index) << "]" << std::endl;
+    std::cout << "BEGAN get_course["<< std::to_string(index) << "]" << std::endl;
     if (index < 0 || index >= numCourses) {
         throw std::out_of_range("Invalid course index");
     }
-    //std::cout << "COMPLETE get_course["<< std::to_string(index) << "]" << std::endl;
+    std::cout << "COMPLETE get_course["<< std::to_string(index) << "]" << std::endl;
     return courseList[index];
 }
 
